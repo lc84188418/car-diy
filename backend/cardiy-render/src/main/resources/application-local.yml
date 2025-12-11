@@ -1,0 +1,17 @@
+# 配置不同环境的启动密码与命名空间（开发环境）
+spring:
+  config:
+    import:
+      # 需要加载的配置文件
+      - nacos:cardiy-render.yml
+      - nacos:common-mongodb.yml
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      config:
+        group: DEFAULT_GROUP # 默认
+        namespace: 9cf37f8f-0a42-405a-a96b-2d19fc7d6a00
+        refresh-enabled: true # 默认配置自动刷新
+        file-extension: yml
+      discovery:
+        namespace: ${spring.cloud.nacos.config.namespace}

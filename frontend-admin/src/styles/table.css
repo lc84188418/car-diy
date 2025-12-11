@@ -1,0 +1,106 @@
+/* 表格全局样式 */
+
+/* 表格容器 */
+.data-table {
+  width: 100%;
+}
+
+/* 表格列宽调整样式 */
+.data-table .el-table__header-wrapper th {
+  user-select: none;
+  position: relative;
+}
+
+/* 表格内容省略 */
+.data-table .el-table__cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 固定列样式优化 */
+.data-table .el-table__fixed-left {
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 表格行完整显示 */
+.data-table .el-table__row {
+  white-space: nowrap;
+}
+
+/* 列宽调整手柄样式 */
+.data-table .resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: col-resize;
+  z-index: 10;
+  background: transparent;
+  transition: background-color 0.2s;
+}
+
+.data-table .resize-handle:hover {
+  background-color: var(--el-color-primary);
+  opacity: 0.5;
+}
+
+/* 操作列固定在视口右侧 - 使用 sticky 定位 */
+.data-table .el-table__fixed-right {
+  position: sticky !important;
+  right: 0 !important;
+  z-index: 100 !important;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15) !important;
+  background: #fff !important;
+}
+
+/* 确保固定列在滚动时保持固定 */
+.data-table .el-table__fixed-right-patch {
+  position: sticky !important;
+  right: 0 !important;
+  z-index: 100 !important;
+  background: #fff !important;
+}
+
+/* 固定列表头 */
+.data-table .el-table__fixed-right .el-table__header-wrapper {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 101 !important;
+  background: #fff !important;
+}
+
+/* 表格容器 - 确保滚动条只影响表格内容 */
+.table-wrapper {
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+/* 确保表格滚动不影响顶部导航栏 */
+.app-container {
+  position: relative;
+  overflow: visible;
+}
+
+/* 表格主体区域滚动 */
+.data-table .el-table__body-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+/* 确保表格头部和固定列在滚动时保持可见 */
+.data-table .el-table__header-wrapper {
+  overflow: visible;
+}
+
+.data-table .el-table__fixed-right .el-table__header-wrapper {
+  overflow: visible;
+}
+
+.data-table .el-table__fixed-right .el-table__body-wrapper {
+  overflow: visible;
+}
+

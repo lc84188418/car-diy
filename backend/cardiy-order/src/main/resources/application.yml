@@ -1,0 +1,29 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: cardiy-order
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/cardiy?useSSL=false&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # cloud:
+  #   nacos:
+  #     discovery:
+  #       server-addr: localhost:8848
+
+seata:
+  enabled: true
+  application-id: cardiy-order
+  tx-service-group: cardiy_tx_group
+  service:
+    vgroup-mapping:
+      cardiy_tx_group: default
+    grouplist:
+      default: 127.0.0.1:8091
+
+
