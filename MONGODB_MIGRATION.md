@@ -3,7 +3,7 @@
 ## ✅ 已完成的修改
 
 ### 1. 数据库脚本
-- ✅ 创建了 MongoDB 初始化脚本：`backend/database/init-mongodb.js`
+- ✅ 创建了 MongoDB 初始化脚本：`backend/database/init-mongodb.md`
 - ✅ 包含所有15个集合的初始化数据和索引
 - ✅ 删除了旧的MySQL SQL脚本
 
@@ -54,10 +54,10 @@ mongod --dbpath "C:\data\db"
 ### 2. 执行初始化脚本
 ```bash
 # MongoDB 5.x+
-mongosh cardiy --file backend/database/init-mongodb.js
+mongosh cardiy --file backend/database/init-mongodb.md
 
 # MongoDB 4.x
-mongo cardiy backend/database/init-mongodb.js
+mongo cardiy backend/database/init-mongodb.md
 ```
 
 ### 3. 验证数据

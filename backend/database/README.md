@@ -4,12 +4,12 @@
 
 ### 方法1：使用 mongo shell（MongoDB 4.x及以下）
 ```bash
-mongo cardiy init-mongodb.js
+mongo cardiy init-mongodb.md
 ```
 
 ### 方法2：使用 mongosh（MongoDB 5.x及以上）
 ```bash
-mongosh cardiy init-mongodb.js
+mongosh cardiy init-mongodb.md
 ```
 
 ### 方法3：在 MongoDB Compass 中执行
@@ -17,7 +17,7 @@ mongosh cardiy init-mongodb.js
 2. 连接到 MongoDB 服务器
 3. 选择 `cardiy` 数据库（如果不存在会自动创建）
 4. 打开 MongoDB Shell
-5. 复制 `init-mongodb.js` 文件内容并执行
+5. 复制 `init-mongodb.md` 文件内容并执行
 
 ## 数据库结构
 
@@ -57,10 +57,10 @@ mongosh cardiy init-mongodb.js
 
 ```bash
 # 使用 mongosh（MongoDB 5.x及以上）
-mongosh cardiy update-sys-user-phonenumber-to-tel.js
+mongosh cardiy update-sys-user-phonenumber-to-tel.md
 
 # 或使用 mongo shell（MongoDB 4.x及以下）
-mongo cardiy update-sys-user-phonenumber-to-tel.js
+mongo cardiy update-sys-user-phonenumber-to-tel.md
 ```
 
 **脚本功能：**

@@ -17,19 +17,19 @@ mongod --dbpath "C:\data\db"
 
 #### 方法1：使用 mongosh（推荐，MongoDB 5.x+）
 ```bash
-mongosh cardiy --file backend/database/init-mongodb.js
+mongosh cardiy --file backend/database/init-mongodb.md
 ```
 
 #### 方法2：使用 mongo shell（MongoDB 4.x）
 ```bash
-mongo cardiy backend/database/init-mongodb.js
+mongo cardiy backend/database/init-mongodb.md
 ```
 
 #### 方法3：在MongoDB Compass中执行
 1. 打开 MongoDB Compass
 2. 连接到 `mongodb://localhost:27017`
 3. 点击 "MONGOSH" 标签
-4. 复制 `init-mongodb.js` 内容并执行
+4. 复制 `init-mongodb.md` 内容并执行
 
 ### 3. 验证初始化
 

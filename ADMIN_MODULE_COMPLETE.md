@@ -218,7 +218,7 @@ response.data  // 直接是对象
 
 ### 1. 初始化数据库
 ```bash
-mongosh cardiy --file backend/database/init-mongodb.js
+mongosh cardiy --file backend/database/init-mongodb.md
 ```
 
 ### 2. 启动后端服务
