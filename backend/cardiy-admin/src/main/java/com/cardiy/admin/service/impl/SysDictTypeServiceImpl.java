@@ -1,5 +1,6 @@
 package com.cardiy.admin.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.cardiy.admin.domain.SysDictType;
 import com.cardiy.admin.mapper.SysDictTypeMapper;
 import com.cardiy.admin.service.ISysDictTypeService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -20,11 +22,14 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService {
     
     @Override
     public SysDictType save(SysDictType dictType) {
+        if(Objects.isNull(dictType.getDictId())){
+            dictType.setDictId(IdUtil.getSnowflakeNextIdStr());
+        }
         return dictTypeMapper.save(dictType);
     }
     
     @Override
-    public Optional<SysDictType> findById(Long dictId) {
+    public Optional<SysDictType> findById(String dictId) {
         SysDictType dictType = dictTypeMapper.findByDictId(dictId);
         return Optional.ofNullable(dictType);
     }
@@ -40,7 +45,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService {
     }
     
     @Override
-    public void deleteById(Long dictId) {
+    public void deleteById(String dictId) {
         SysDictType dictType = dictTypeMapper.findByDictId(dictId);
         if (dictType != null && dictType.getId() != null) {
             dictTypeMapper.deleteById(dictType.getId());
@@ -48,8 +53,8 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService {
     }
     
     @Override
-    public void deleteAllById(List<Long> dictIds) {
-        for (Long dictId : dictIds) {
+    public void deleteAllById(List<String> dictIds) {
+        for (String dictId : dictIds) {
             deleteById(dictId);
         }
     }

@@ -75,7 +75,7 @@ public class SysRoleController {
      * 根据角色编号获取详细信息
      */
     @GetMapping(value = "/{roleId}")
-    public Result<SysRole> getInfo(@PathVariable("roleId") Long roleId) {
+    public Result<SysRole> getInfo(@PathVariable("roleId") String roleId) {
         return roleService.findById(roleId)
             .map(Result::success)
             .orElse(Result.error("角色不存在"));
@@ -103,7 +103,7 @@ public class SysRoleController {
      * 删除角色
      */
     @DeleteMapping("/{roleIds}")
-    public Result<Void> remove(@PathVariable Long[] roleIds) {
+    public Result<Void> remove(@PathVariable String[] roleIds) {
         roleService.deleteAllById(List.of(roleIds));
         return Result.success();
     }

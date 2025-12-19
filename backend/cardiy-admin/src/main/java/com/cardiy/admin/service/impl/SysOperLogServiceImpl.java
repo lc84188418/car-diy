@@ -1,5 +1,6 @@
 package com.cardiy.admin.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.cardiy.admin.domain.SysOperLog;
 import com.cardiy.admin.mapper.SysOperLogMapper;
 import com.cardiy.admin.service.ISysOperLogService;
@@ -23,11 +24,12 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     
     @Override
     public SysOperLog save(SysOperLog operLog) {
+        operLog.setOperId(IdUtil.getSnowflakeNextIdStr());
         return operLogMapper.save(operLog);
     }
     
     @Override
-    public Optional<SysOperLog> findById(Long operId) {
+    public Optional<SysOperLog> findById(String operId) {
         SysOperLog operLog = operLogMapper.findByOperId(operId);
         return Optional.ofNullable(operLog);
     }
@@ -43,7 +45,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     }
     
     @Override
-    public void deleteById(Long operId) {
+    public void deleteById(String operId) {
         SysOperLog operLog = operLogMapper.findByOperId(operId);
         if (operLog != null && operLog.getId() != null) {
             operLogMapper.deleteById(operLog.getId());
@@ -51,8 +53,8 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     }
     
     @Override
-    public void deleteAllById(List<Long> operIds) {
-        for (Long operId : operIds) {
+    public void deleteAllById(List<String> operIds) {
+        for (String operId : operIds) {
             deleteById(operId);
         }
     }

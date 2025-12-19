@@ -12,7 +12,7 @@ public interface ISysDictDataService {
     
     SysDictData save(SysDictData dictData);
     
-    Optional<SysDictData> findById(Long dictCode);
+    Optional<SysDictData> findById(String dictCode);
     
     List<SysDictData> findAll();
     
@@ -20,8 +20,8 @@ public interface ISysDictDataService {
     
     List<SysDictData> findByDictTypeAndStatus(String dictType, String status);
     
-    void deleteById(Long dictCode);
+    void deleteById(String dictCode);
     
-    void deleteAllById(List<Long> dictCodes);
+    void deleteAllById(List<String> dictCodes);
 }
 

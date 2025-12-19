@@ -13,7 +13,7 @@ public interface SysConfigMapper extends MongoRepository<SysConfig, String> {
     /**
      * 根据业务ID查询参数配置
      */
-    SysConfig findByConfigId(Long configId);
+    SysConfig findByConfigId(String configId);
     
     /**
      * 根据参数键名查询

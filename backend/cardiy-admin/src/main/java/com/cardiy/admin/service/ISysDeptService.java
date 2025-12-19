@@ -12,15 +12,15 @@ public interface ISysDeptService {
     
     SysDept save(SysDept dept);
     
-    Optional<SysDept> findById(Long deptId);
+    Optional<SysDept> findById(String deptId);
     
     List<SysDept> findAll();
     
-    List<SysDept> findByParentId(Long parentId);
+    List<SysDept> findByParentId(String parentId);
     
     List<SysDept> findByStatus(String status);
     
-    void deleteById(Long deptId);
+    void deleteById(String deptId);
     
     /**
      * 构建部门树

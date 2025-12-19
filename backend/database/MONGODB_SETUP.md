@@ -17,12 +17,12 @@ mongod --dbpath "C:\data\db"
 
 #### 方法1：使用 mongosh（推荐，MongoDB 5.x+）
 ```bash
-mongosh cardiy --file backend/database/init-mongodb.md
+mongosh cardiy --file backend/database/init-mongodb.js
 ```
 
 #### 方法2：使用 mongo shell（MongoDB 4.x）
 ```bash
-mongo cardiy backend/database/init-mongodb.md
+mongo cardiy backend/database/init-mongodb.js
 ```
 
 #### 方法3：在MongoDB Compass中执行

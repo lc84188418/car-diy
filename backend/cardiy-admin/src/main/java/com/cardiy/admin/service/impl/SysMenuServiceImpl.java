@@ -1,5 +1,6 @@
 package com.cardiy.admin.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.cardiy.admin.domain.SysMenu;
 import com.cardiy.admin.mapper.SysMenuMapper;
 import com.cardiy.admin.service.ISysMenuService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -21,11 +23,14 @@ public class SysMenuServiceImpl implements ISysMenuService {
 
     @Override
     public SysMenu save(SysMenu menu) {
+        if(Objects.isNull(menu.getMenuId())){
+            menu.setMenuId(IdUtil.getSnowflakeNextIdStr());
+        }
         return menuMapper.save(menu);
     }
 
     @Override
-    public Optional<SysMenu> findById(Long menuId) {
+    public Optional<SysMenu> findById(String menuId) {
         SysMenu menu = menuMapper.findByMenuId(menuId);
         return Optional.ofNullable(menu);
     }
@@ -36,7 +41,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
     }
 
     @Override
-    public List<SysMenu> findByParentId(Long parentId) {
+    public List<SysMenu> findByParentId(String parentId) {
         return menuMapper.findByParentIdOrderByOrderNumAsc(parentId);
     }
 
@@ -46,7 +51,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
     }
 
     @Override
-    public void deleteById(Long menuId) {
+    public void deleteById(String menuId) {
         SysMenu menu = menuMapper.findByMenuId(menuId);
         if (menu != null && menu.getId() != null) {
             menuMapper.deleteById(menu.getId());

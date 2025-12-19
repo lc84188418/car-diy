@@ -14,7 +14,7 @@ public interface ISysConfigService {
     
     SysConfig save(SysConfig config);
     
-    Optional<SysConfig> findById(Long configId);
+    Optional<SysConfig> findById(String configId);
     
     Optional<SysConfig> findByConfigKey(String configKey);
     
@@ -22,8 +22,8 @@ public interface ISysConfigService {
     
     Page<SysConfig> findAll(Pageable pageable);
     
-    void deleteById(Long configId);
+    void deleteById(String configId);
     
-    void deleteAllById(List<Long> configIds);
+    void deleteAllById(List<String> configIds);
 }
 

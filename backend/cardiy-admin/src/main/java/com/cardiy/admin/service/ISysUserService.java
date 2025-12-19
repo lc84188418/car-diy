@@ -20,7 +20,7 @@ public interface ISysUserService {
     /**
      * 根据ID查询用户
      */
-    Optional<SysUser> findById(Long userId);
+    Optional<SysUser> findById(String userId);
     
     /**
      * 查询所有用户
@@ -45,11 +45,11 @@ public interface ISysUserService {
     /**
      * 删除用户
      */
-    void deleteById(Long userId);
+    void deleteById(String userId);
     
     /**
      * 批量删除用户
      */
-    void deleteAllById(List<Long> userIds);
+    void deleteAllById(List<String> userIds);
 }
 

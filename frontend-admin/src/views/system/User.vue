@@ -518,6 +518,7 @@ const handleUpdate = (row) => {
     const userData = response.data || {};
     // 处理表单数据
     form.value = {
+      id: userData.id,
       userId: userData.userId,
       deptId: userData.deptId,
       userName: userData.userName,

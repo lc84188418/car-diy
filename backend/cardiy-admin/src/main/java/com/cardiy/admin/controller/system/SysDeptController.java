@@ -40,7 +40,7 @@ public class SysDeptController {
      * 根据部门编号获取详细信息
      */
     @GetMapping(value = "/{deptId}")
-    public Result<SysDept> getInfo(@PathVariable("deptId") Long deptId) {
+    public Result<SysDept> getInfo(@PathVariable("deptId") String deptId) {
         return deptService.findById(deptId)
             .map(Result::success)
             .orElse(Result.error("部门不存在"));
@@ -68,7 +68,7 @@ public class SysDeptController {
      * 删除部门
      */
     @DeleteMapping("/{deptId}")
-    public Result<Void> remove(@PathVariable("deptId") Long deptId) {
+    public Result<Void> remove(@PathVariable("deptId") String deptId) {
         deptService.deleteById(deptId);
         return Result.success();
     }

@@ -82,7 +82,7 @@ public class SysUserController {
      * 根据用户编号获取详细信息
      */
     @GetMapping(value = "/{userId}")
-    public Result<SysUser> getInfo(@PathVariable("userId") Long userId) {
+    public Result<SysUser> getInfo(@PathVariable("userId") String userId) {
         return userService.findById(userId)
             .map(Result::success)
             .orElse(Result.error("用户不存在"));
@@ -110,7 +110,7 @@ public class SysUserController {
      * 删除用户
      */
     @DeleteMapping("/{userIds}")
-    public Result<Void> remove(@PathVariable Long[] userIds) {
+    public Result<Void> remove(@PathVariable String[] userIds) {
         userService.deleteAllById(List.of(userIds));
         return Result.success();
     }

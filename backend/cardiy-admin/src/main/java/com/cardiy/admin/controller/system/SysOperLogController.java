@@ -53,7 +53,7 @@ public class SysOperLogController {
      * 根据操作日志编号获取详细信息
      */
     @GetMapping(value = "/{operId}")
-    public Result<SysOperLog> getInfo(@PathVariable("operId") Long operId) {
+    public Result<SysOperLog> getInfo(@PathVariable("operId") String operId) {
         return operLogService.findById(operId)
             .map(Result::success)
             .orElse(Result.error("操作日志不存在"));
@@ -63,7 +63,7 @@ public class SysOperLogController {
      * 删除操作日志
      */
     @DeleteMapping("/{operIds}")
-    public Result<Void> remove(@PathVariable Long[] operIds) {
+    public Result<Void> remove(@PathVariable String[] operIds) {
         operLogService.deleteAllById(List.of(operIds));
         return Result.success();
     }

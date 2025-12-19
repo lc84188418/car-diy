@@ -15,7 +15,7 @@ public interface SysDictTypeMapper extends MongoRepository<SysDictType, String> 
     /**
      * 根据业务ID查询字典类型
      */
-    SysDictType findByDictId(Long dictId);
+    SysDictType findByDictId(String dictId);
     
     /**
      * 根据字典类型查询

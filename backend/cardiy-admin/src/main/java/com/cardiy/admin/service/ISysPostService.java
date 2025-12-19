@@ -14,7 +14,7 @@ public interface ISysPostService {
     
     SysPost save(SysPost post);
     
-    Optional<SysPost> findById(Long postId);
+    Optional<SysPost> findById(String postId);
     
     List<SysPost> findAll();
     
@@ -22,8 +22,8 @@ public interface ISysPostService {
     
     List<SysPost> findByStatus(String status);
     
-    void deleteById(Long postId);
+    void deleteById(String postId);
     
-    void deleteAllById(List<Long> postIds);
+    void deleteAllById(List<String> postIds);
 }
 

@@ -4,12 +4,12 @@
 
 ### 方法1：使用 mongo shell（MongoDB 4.x及以下）
 ```bash
-mongo cardiy init-mongodb.md
+mongo cardiy init-mongodb.js
 ```
 
 ### 方法2：使用 mongosh（MongoDB 5.x及以上）
 ```bash
-mongosh cardiy init-mongodb.md
+mongosh cardiy init-mongodb.js
 ```
 
 ### 方法3：在 MongoDB Compass 中执行

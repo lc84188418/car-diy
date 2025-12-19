@@ -17,7 +17,7 @@ public interface SysOperLogMapper extends MongoRepository<SysOperLog, String> {
     /**
      * 根据业务ID查询操作日志
      */
-    SysOperLog findByOperId(Long operId);
+    SysOperLog findByOperId(String operId);
     
     /**
      * 根据操作时间范围查询

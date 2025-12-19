@@ -15,14 +15,14 @@ public interface ISysLogininforService {
     
     SysLogininfor save(SysLogininfor logininfor);
     
-    Optional<SysLogininfor> findById(Long infoId);
+    Optional<SysLogininfor> findById(String infoId);
     
     Page<SysLogininfor> findAll(Pageable pageable);
     
     Page<SysLogininfor> findByLoginTimeBetween(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
     
-    void deleteById(Long infoId);
+    void deleteById(String infoId);
     
-    void deleteAllById(List<Long> infoIds);
+    void deleteAllById(List<String> infoIds);
 }
 

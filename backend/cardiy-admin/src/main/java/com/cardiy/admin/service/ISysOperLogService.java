@@ -15,14 +15,14 @@ public interface ISysOperLogService {
     
     SysOperLog save(SysOperLog operLog);
     
-    Optional<SysOperLog> findById(Long operId);
+    Optional<SysOperLog> findById(String operId);
     
     Page<SysOperLog> findAll(Pageable pageable);
     
     Page<SysOperLog> findByOperTimeBetween(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
     
-    void deleteById(Long operId);
+    void deleteById(String operId);
     
-    void deleteAllById(List<Long> operIds);
+    void deleteAllById(List<String> operIds);
 }
 

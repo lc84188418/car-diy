@@ -15,12 +15,12 @@ public interface SysDeptMapper extends MongoRepository<SysDept, String> {
     /**
      * 根据业务ID查询部门
      */
-    SysDept findByDeptId(Long deptId);
+    SysDept findByDeptId(String deptId);
     
     /**
      * 根据父部门ID查询
      */
-    List<SysDept> findByParentIdOrderByOrderNumAsc(Long parentId);
+    List<SysDept> findByParentIdOrderByOrderNumAsc(String parentId);
     
     /**
      * 根据状态查询部门

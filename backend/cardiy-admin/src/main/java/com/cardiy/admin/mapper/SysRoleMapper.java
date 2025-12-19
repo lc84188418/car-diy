@@ -15,7 +15,7 @@ public interface SysRoleMapper extends MongoRepository<SysRole, String> {
     /**
      * 根据业务ID查询角色
      */
-    SysRole findByRoleId(Long roleId);
+    SysRole findByRoleId(String roleId);
     
     /**
      * 根据角色名称查询

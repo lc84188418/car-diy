@@ -53,7 +53,7 @@ public class SysLogininforController {
      * 根据访问编号获取详细信息
      */
     @GetMapping(value = "/{infoId}")
-    public Result<SysLogininfor> getInfo(@PathVariable("infoId") Long infoId) {
+    public Result<SysLogininfor> getInfo(@PathVariable("infoId") String infoId) {
         return logininforService.findById(infoId)
             .map(Result::success)
             .orElse(Result.error("登录日志不存在"));
@@ -63,7 +63,7 @@ public class SysLogininforController {
      * 删除登录日志
      */
     @DeleteMapping("/{infoIds}")
-    public Result<Void> remove(@PathVariable Long[] infoIds) {
+    public Result<Void> remove(@PathVariable String[] infoIds) {
         logininforService.deleteAllById(List.of(infoIds));
         return Result.success();
     }

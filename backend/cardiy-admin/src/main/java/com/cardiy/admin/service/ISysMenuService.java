@@ -12,15 +12,15 @@ public interface ISysMenuService {
     
     SysMenu save(SysMenu menu);
     
-    Optional<SysMenu> findById(Long menuId);
+    Optional<SysMenu> findById(String menuId);
     
     List<SysMenu> findAll();
     
-    List<SysMenu> findByParentId(Long parentId);
+    List<SysMenu> findByParentId(String parentId);
     
     List<SysMenu> findByStatus(String status);
     
-    void deleteById(Long menuId);
+    void deleteById(String menuId);
     
     /**
      * 构建菜单树

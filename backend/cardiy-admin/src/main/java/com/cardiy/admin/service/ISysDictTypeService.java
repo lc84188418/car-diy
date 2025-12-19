@@ -12,14 +12,14 @@ public interface ISysDictTypeService {
     
     SysDictType save(SysDictType dictType);
     
-    Optional<SysDictType> findById(Long dictId);
+    Optional<SysDictType> findById(String dictId);
     
     List<SysDictType> findAll();
     
     List<SysDictType> findByStatus(String status);
     
-    void deleteById(Long dictId);
+    void deleteById(String dictId);
     
-    void deleteAllById(List<Long> dictIds);
+    void deleteAllById(List<String> dictIds);
 }
 

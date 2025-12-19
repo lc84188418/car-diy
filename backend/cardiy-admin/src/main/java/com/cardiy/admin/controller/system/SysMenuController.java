@@ -40,7 +40,7 @@ public class SysMenuController {
      * 根据菜单编号获取详细信息
      */
     @GetMapping(value = "/{menuId}")
-    public Result<SysMenu> getInfo(@PathVariable("menuId") Long menuId) {
+    public Result<SysMenu> getInfo(@PathVariable("menuId") String menuId) {
         return menuService.findById(menuId)
             .map(Result::success)
             .orElse(Result.error("菜单不存在"));
@@ -68,7 +68,7 @@ public class SysMenuController {
      * 删除菜单
      */
     @DeleteMapping("/{menuId}")
-    public Result<Void> remove(@PathVariable("menuId") Long menuId) {
+    public Result<Void> remove(@PathVariable("menuId") String menuId) {
         menuService.deleteById(menuId);
         return Result.success();
     }

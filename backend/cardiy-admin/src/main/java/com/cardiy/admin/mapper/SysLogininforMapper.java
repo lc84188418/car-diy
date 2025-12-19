@@ -17,7 +17,7 @@ public interface SysLogininforMapper extends MongoRepository<SysLogininfor, Stri
     /**
      * 根据业务ID查询登录日志
      */
-    SysLogininfor findByInfoId(Long infoId);
+    SysLogininfor findByInfoId(String infoId);
     
     /**
      * 根据登录时间范围查询

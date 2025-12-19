@@ -15,12 +15,12 @@ public interface SysMenuMapper extends MongoRepository<SysMenu, String> {
     /**
      * 根据业务ID查询菜单
      */
-    SysMenu findByMenuId(Long menuId);
+    SysMenu findByMenuId(String menuId);
     
     /**
      * 根据父菜单ID查询
      */
-    List<SysMenu> findByParentIdOrderByOrderNumAsc(Long parentId);
+    List<SysMenu> findByParentIdOrderByOrderNumAsc(String parentId);
     
     /**
      * 根据状态查询菜单

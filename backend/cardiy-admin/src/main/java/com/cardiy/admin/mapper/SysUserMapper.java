@@ -30,6 +30,6 @@ public interface SysUserMapper extends MongoRepository<SysUser, String> {
     /**
      * 根据业务ID（userId）查询用户
      */
-    SysUser findByUserId(Long userId);
+    SysUser findByUserId(String userId);
 }
 

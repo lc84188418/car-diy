@@ -15,7 +15,7 @@ public interface SysDictDataMapper extends MongoRepository<SysDictData, String> 
     /**
      * 根据业务ID查询字典数据
      */
-    SysDictData findByDictCode(Long dictCode);
+    SysDictData findByDictCode(String dictCode);
     
     /**
      * 根据字典类型查询

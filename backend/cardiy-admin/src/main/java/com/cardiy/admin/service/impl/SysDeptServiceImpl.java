@@ -1,5 +1,6 @@
 package com.cardiy.admin.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.cardiy.admin.domain.SysDept;
 import com.cardiy.admin.mapper.SysDeptMapper;
 import com.cardiy.admin.service.ISysDeptService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -21,11 +23,14 @@ public class SysDeptServiceImpl implements ISysDeptService {
 
     @Override
     public SysDept save(SysDept dept) {
+        if(Objects.isNull(dept.getDeptId())){
+            dept.setDeptId(IdUtil.getSnowflakeNextIdStr());
+        }
         return deptMapper.save(dept);
     }
 
     @Override
-    public Optional<SysDept> findById(Long deptId) {
+    public Optional<SysDept> findById(String deptId) {
         SysDept dept = deptMapper.findByDeptId(deptId);
         return Optional.ofNullable(dept);
     }
@@ -36,7 +41,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
     }
 
     @Override
-    public List<SysDept> findByParentId(Long parentId) {
+    public List<SysDept> findByParentId(String parentId) {
         return deptMapper.findByParentIdOrderByOrderNumAsc(parentId);
     }
 
@@ -46,7 +51,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
     }
 
     @Override
-    public void deleteById(Long deptId) {
+    public void deleteById(String deptId) {
         SysDept dept = deptMapper.findByDeptId(deptId);
         if (dept != null && dept.getId() != null) {
             deptMapper.deleteById(dept.getId());
@@ -56,8 +61,9 @@ public class SysDeptServiceImpl implements ISysDeptService {
     @Override
     public List<SysDept> buildDeptTree(List<SysDept> depts) {
         List<SysDept> tree = new ArrayList<>();
+        //先获取到根节点，也就是父ID为"-"的部门
         for (SysDept dept : depts) {
-            if (dept.getParentId() == null || "-".equals(dept.getParentId())) {
+            if (dept.getParentId() == null || "0".equals(dept.getParentId())) {
                 tree.add(dept);
             }
         }

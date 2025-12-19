@@ -1,5 +1,6 @@
 package com.cardiy.admin.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.cardiy.admin.domain.SysLogininfor;
 import com.cardiy.admin.mapper.SysLogininforMapper;
 import com.cardiy.admin.service.ISysLogininforService;
@@ -17,42 +18,43 @@ import java.util.Optional;
  */
 @Service
 public class SysLogininforServiceImpl implements ISysLogininforService {
-    
+
     @Autowired
     private SysLogininforMapper logininforMapper;
-    
+
     @Override
     public SysLogininfor save(SysLogininfor logininfor) {
+        logininfor.setInfoId(IdUtil.getSnowflakeNextIdStr());
         return logininforMapper.save(logininfor);
     }
-    
+
     @Override
-    public Optional<SysLogininfor> findById(Long infoId) {
+    public Optional<SysLogininfor> findById(String infoId) {
         SysLogininfor logininfor = logininforMapper.findByInfoId(infoId);
         return Optional.ofNullable(logininfor);
     }
-    
+
     @Override
     public Page<SysLogininfor> findAll(Pageable pageable) {
         return logininforMapper.findAll(pageable);
     }
-    
+
     @Override
     public Page<SysLogininfor> findByLoginTimeBetween(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable) {
         return logininforMapper.findByLoginTimeBetween(startTime, endTime, pageable);
     }
-    
+
     @Override
-    public void deleteById(Long infoId) {
+    public void deleteById(String infoId) {
         SysLogininfor logininfor = logininforMapper.findByInfoId(infoId);
         if (logininfor != null && logininfor.getId() != null) {
             logininforMapper.deleteById(logininfor.getId());
         }
     }
-    
+
     @Override
-    public void deleteAllById(List<Long> infoIds) {
-        for (Long infoId : infoIds) {
+    public void deleteAllById(List<String> infoIds) {
+        for (String infoId : infoIds) {
             deleteById(infoId);
         }
     }

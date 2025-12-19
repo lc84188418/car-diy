@@ -1,5 +1,6 @@
 package com.cardiy.admin.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.cardiy.admin.domain.SysPost;
 import com.cardiy.admin.mapper.SysPostMapper;
 import com.cardiy.admin.service.ISysPostService;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -22,11 +24,14 @@ public class SysPostServiceImpl implements ISysPostService {
     
     @Override
     public SysPost save(SysPost post) {
+        if(Objects.isNull(post.getPostId())){
+            post.setPostId(IdUtil.getSnowflakeNextIdStr());
+        }
         return postMapper.save(post);
     }
     
     @Override
-    public Optional<SysPost> findById(Long postId) {
+    public Optional<SysPost> findById(String postId) {
         SysPost post = postMapper.findByPostId(postId);
         return Optional.ofNullable(post);
     }
@@ -47,7 +52,7 @@ public class SysPostServiceImpl implements ISysPostService {
     }
     
     @Override
-    public void deleteById(Long postId) {
+    public void deleteById(String postId) {
         SysPost post = postMapper.findByPostId(postId);
         if (post != null && post.getId() != null) {
             postMapper.deleteById(post.getId());
@@ -55,8 +60,8 @@ public class SysPostServiceImpl implements ISysPostService {
     }
     
     @Override
-    public void deleteAllById(List<Long> postIds) {
-        for (Long postId : postIds) {
+    public void deleteAllById(List<String> postIds) {
+        for (String postId : postIds) {
             deleteById(postId);
         }
     }

@@ -75,7 +75,7 @@ public class SysConfigController {
      * 根据参数编号获取详细信息
      */
     @GetMapping(value = "/{configId}")
-    public Result<SysConfig> getInfo(@PathVariable("configId") Long configId) {
+    public Result<SysConfig> getInfo(@PathVariable("configId") String configId) {
         return configService.findById(configId)
             .map(Result::success)
             .orElse(Result.error("参数配置不存在"));
@@ -113,7 +113,7 @@ public class SysConfigController {
      * 删除参数配置
      */
     @DeleteMapping("/{configIds}")
-    public Result<Void> remove(@PathVariable Long[] configIds) {
+    public Result<Void> remove(@PathVariable String[] configIds) {
         configService.deleteAllById(List.of(configIds));
         return Result.success();
     }

@@ -42,7 +42,7 @@ public class SysDictController {
      * 根据字典类型编号获取详细信息
      */
     @GetMapping("/type/{dictId}")
-    public Result<SysDictType> getTypeInfo(@PathVariable("dictId") Long dictId) {
+    public Result<SysDictType> getTypeInfo(@PathVariable("dictId") String dictId) {
         return dictTypeService.findById(dictId)
             .map(Result::success)
             .orElse(Result.error("字典类型不存在"));
@@ -70,7 +70,7 @@ public class SysDictController {
      * 删除字典类型
      */
     @DeleteMapping("/type/{dictIds}")
-    public Result<Void> removeType(@PathVariable Long[] dictIds) {
+    public Result<Void> removeType(@PathVariable String[] dictIds) {
         dictTypeService.deleteAllById(List.of(dictIds));
         return Result.success();
     }
@@ -98,7 +98,7 @@ public class SysDictController {
      * 根据字典编码获取详细信息
      */
     @GetMapping("/data/{dictCode}")
-    public Result<SysDictData> getDataInfo(@PathVariable("dictCode") Long dictCode) {
+    public Result<SysDictData> getDataInfo(@PathVariable("dictCode") String dictCode) {
         return dictDataService.findById(dictCode)
             .map(Result::success)
             .orElse(Result.error("字典数据不存在"));
@@ -126,7 +126,7 @@ public class SysDictController {
      * 删除字典数据
      */
     @DeleteMapping("/data/{dictCodes}")
-    public Result<Void> removeData(@PathVariable Long[] dictCodes) {
+    public Result<Void> removeData(@PathVariable String[] dictCodes) {
         dictDataService.deleteAllById(List.of(dictCodes));
         return Result.success();
     }

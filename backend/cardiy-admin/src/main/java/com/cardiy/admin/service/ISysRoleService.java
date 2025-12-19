@@ -14,7 +14,7 @@ public interface ISysRoleService {
     
     SysRole save(SysRole role);
     
-    Optional<SysRole> findById(Long roleId);
+    Optional<SysRole> findById(String roleId);
     
     List<SysRole> findAll();
     
@@ -22,8 +22,8 @@ public interface ISysRoleService {
     
     List<SysRole> findByStatus(String status);
     
-    void deleteById(Long roleId);
+    void deleteById(String roleId);
     
-    void deleteAllById(List<Long> roleIds);
+    void deleteAllById(List<String> roleIds);
 }
 

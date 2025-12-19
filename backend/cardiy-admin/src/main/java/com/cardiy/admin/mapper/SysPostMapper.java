@@ -15,7 +15,7 @@ public interface SysPostMapper extends MongoRepository<SysPost, String> {
     /**
      * 根据业务ID查询岗位
      */
-    SysPost findByPostId(Long postId);
+    SysPost findByPostId(String postId);
     
     /**
      * 根据岗位编码查询

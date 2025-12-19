@@ -1,5 +1,6 @@
 package com.cardiy.admin.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.cardiy.admin.domain.SysRole;
 import com.cardiy.admin.mapper.SysRoleMapper;
 import com.cardiy.admin.service.ISysRoleService;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -22,11 +24,14 @@ public class SysRoleServiceImpl implements ISysRoleService {
     
     @Override
     public SysRole save(SysRole role) {
+        if(Objects.isNull(role.getRoleId())){
+            role.setRoleId(IdUtil.getSnowflakeNextIdStr());
+        }
         return roleMapper.save(role);
     }
     
     @Override
-    public Optional<SysRole> findById(Long roleId) {
+    public Optional<SysRole> findById(String roleId) {
         SysRole role = roleMapper.findByRoleId(roleId);
         return Optional.ofNullable(role);
     }
@@ -47,7 +52,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
     }
     
     @Override
-    public void deleteById(Long roleId) {
+    public void deleteById(String roleId) {
         SysRole role = roleMapper.findByRoleId(roleId);
         if (role != null && role.getId() != null) {
             roleMapper.deleteById(role.getId());
@@ -55,8 +60,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
     }
     
     @Override
-    public void deleteAllById(List<Long> roleIds) {
-        for (Long roleId : roleIds) {
+    public void deleteAllById(List<String> roleIds) {
+        for (String roleId : roleIds) {
             deleteById(roleId);
         }
     }

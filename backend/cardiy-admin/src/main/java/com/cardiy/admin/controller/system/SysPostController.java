@@ -75,7 +75,7 @@ public class SysPostController {
      * 根据岗位编号获取详细信息
      */
     @GetMapping(value = "/{postId}")
-    public Result<SysPost> getInfo(@PathVariable("postId") Long postId) {
+    public Result<SysPost> getInfo(@PathVariable("postId") String postId) {
         return postService.findById(postId)
             .map(Result::success)
             .orElse(Result.error("岗位不存在"));
@@ -103,7 +103,7 @@ public class SysPostController {
      * 删除岗位
      */
     @DeleteMapping("/{postIds}")
-    public Result<Void> remove(@PathVariable Long[] postIds) {
+    public Result<Void> remove(@PathVariable String[] postIds) {
         postService.deleteAllById(List.of(postIds));
         return Result.success();
     }

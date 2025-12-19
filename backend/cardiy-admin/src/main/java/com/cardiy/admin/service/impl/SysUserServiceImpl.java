@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -23,12 +24,14 @@ public class SysUserServiceImpl implements ISysUserService {
     
     @Override
     public SysUser save(SysUser user) {
-        user.setUserId(IdUtil.getSnowflakeNextIdStr());
+        if(Objects.isNull(user.getUserId())){
+            user.setUserId(IdUtil.getSnowflakeNextIdStr());
+        }
         return userMapper.save(user);
     }
     
     @Override
-    public Optional<SysUser> findById(Long userId) {
+    public Optional<SysUser> findById(String userId) {
         SysUser user = userMapper.findByUserId(userId);
         return Optional.ofNullable(user);
     }
@@ -54,7 +57,7 @@ public class SysUserServiceImpl implements ISysUserService {
     }
     
     @Override
-    public void deleteById(Long userId) {
+    public void deleteById(String userId) {
         SysUser user = userMapper.findByUserId(userId);
         if (user != null && user.getId() != null) {
             userMapper.deleteById(user.getId());
@@ -62,8 +65,8 @@ public class SysUserServiceImpl implements ISysUserService {
     }
     
     @Override
-    public void deleteAllById(List<Long> userIds) {
-        for (Long userId : userIds) {
+    public void deleteAllById(List<String> userIds) {
+        for (String userId : userIds) {
             deleteById(userId);
         }
     }
