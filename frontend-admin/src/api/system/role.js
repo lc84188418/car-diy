@@ -8,6 +8,14 @@ export function listRole(query) {
     params: query
   });
 }
+// 查询角色列表-下来选择器用
+export function roleSelector(query) {
+  return request({
+    url: "/api/admin/system/role/selector",
+    method: "get",
+    params: query
+  });
+}
 
 // 查询角色详细
 export function getRole(roleId) {

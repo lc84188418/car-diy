@@ -1,6 +1,7 @@
 package com.cardiy.admin.controller.system;
 
 import com.cardiy.admin.domain.SysRole;
+import com.cardiy.admin.domain.vo.CommonSelector;
 import com.cardiy.admin.service.ISysRoleService;
 import com.cardiy.admin.util.MongoQueryUtil;
 import com.cardiy.common.api.Result;
@@ -69,6 +70,15 @@ public class SysRoleController {
         Page<SysRole> page = MongoQueryUtil.queryWithPage(mongoTemplate, query, SysRole.class, pageable);
         
         return Result.success(page);
+    }
+    /**
+     * 获取角色列表
+     */
+    @GetMapping("/selector")
+    public Result<List<CommonSelector>> selector(
+            @RequestParam(value = "roleName", required = false) String roleName,
+            @RequestParam(value = "roleKey", required = false) String roleKey) {
+        return Result.success(roleService.findAllSelector(roleName,roleKey));
     }
 
     /**

@@ -7,10 +7,10 @@
       label-width="68px"
       class="search-form"
     >
-      <el-form-item label="用户名称" prop="userName">
+      <el-form-item label="用户名" prop="userName">
         <el-input
           v-model="queryParams.userName"
-          placeholder="请输入用户名称"
+          placeholder="请输入用户名"
           clearable
           style="width: 200px"
           @keyup.enter="handleQuery"
@@ -102,7 +102,7 @@
       <el-table-column type="selection" width="55" align="center" fixed="left" />
       <el-table-column label="用户编号" prop="userId" min-width="100" show-overflow-tooltip />
       <el-table-column
-        label="用户名称"
+        label="用户名"
         prop="userName"
         min-width="120"
         show-overflow-tooltip
@@ -204,8 +204,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" label="用户名称" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入用户名称" />
+            <el-form-item v-if="form.userId == undefined" label="用户名" prop="userName">
+              <el-input v-model="form.userName" placeholder="请输入用户名" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -291,8 +291,8 @@ import { ref, reactive, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { listUser, getUser, delUser, addUser, updateUser } from "@/api/system/user";
 import { listDept } from "@/api/system/dept";
-import { listRole } from "@/api/system/role";
-import { listPost } from "@/api/system/post";
+import { roleSelector } from "@/api/system/role";
+import { postSelector } from "@/api/system/post";
 
 const loading = ref(true);
 const userList = ref([]);
@@ -334,7 +334,7 @@ const form = ref({
 });
 
 const rules = {
-  userName: [{ required: true, message: "用户名称不能为空", trigger: "blur" }],
+  userName: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
   nickName: [{ required: true, message: "用户昵称不能为空", trigger: "blur" }],
   password: [
     { required: true, message: "用户密码不能为空", trigger: "blur" },
@@ -418,22 +418,22 @@ const loadDeptOptions = () => {
 
 /** 加载角色选项 */
 const loadRoleOptions = () => {
-  listRole({ current: 1, size: 1000 }).then((response) => {
-    const roles = response.data?.content || response.data?.records || [];
+  roleSelector({}).then((response) => {
+    const roles = response.data || [];
     roleOptions.value = roles.map(role => ({
-      roleId: role.roleId,
-      roleName: role.roleName
+      roleId: role.id,
+      roleName: role.name
     }));
   });
 };
 
 /** 加载岗位选项 */
 const loadPostOptions = () => {
-  listPost({ current: 1, size: 1000 }).then((response) => {
-    const posts = response.data?.content || response.data?.records || [];
+  postSelector({ current: 1, size: 1000 }).then((response) => {
+    const posts = response.data || [];
     postOptions.value = posts.map(post => ({
-      postId: post.postId,
-      postName: post.postName
+      postId: post.id,
+      postName: post.name
     }));
   });
 };

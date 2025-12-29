@@ -1,6 +1,7 @@
 package com.cardiy.admin.controller.system;
 
 import com.cardiy.admin.domain.SysPost;
+import com.cardiy.admin.domain.vo.CommonSelector;
 import com.cardiy.admin.service.ISysPostService;
 import com.cardiy.admin.util.MongoQueryUtil;
 import com.cardiy.common.api.Result;
@@ -71,6 +72,15 @@ public class SysPostController {
         return Result.success(page);
     }
 
+    /**
+     * 获取岗位列表
+     */
+    @GetMapping("/selector")
+    public Result<List<CommonSelector>> selector(
+            @RequestParam(value = "postName", required = false) String postName,
+            @RequestParam(value = "postCode", required = false) String postCode) {
+        return Result.success(postService.findAllSelector(postName,postCode));
+    }
     /**
      * 根据岗位编号获取详细信息
      */

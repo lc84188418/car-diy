@@ -1,6 +1,7 @@
 package com.cardiy.admin.service;
 
 import com.cardiy.admin.domain.SysPost;
+import com.cardiy.admin.domain.vo.CommonSelector;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,5 +26,7 @@ public interface ISysPostService {
     void deleteById(String postId);
     
     void deleteAllById(List<String> postIds);
+
+    List<CommonSelector> findAllSelector(String postName, String postCode);
 }
 

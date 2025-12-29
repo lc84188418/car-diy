@@ -1,11 +1,12 @@
 package com.cardiy.admin.service;
 
 import com.cardiy.admin.domain.SysUser;
+import com.cardiy.admin.domain.vo.SysUserVo;
+import com.cardiy.common.api.Result;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 用户 业务层
@@ -20,7 +21,7 @@ public interface ISysUserService {
     /**
      * 根据ID查询用户
      */
-    Optional<SysUser> findById(String userId);
+    Result<SysUserVo> findById(String userId);
     
     /**
      * 查询所有用户

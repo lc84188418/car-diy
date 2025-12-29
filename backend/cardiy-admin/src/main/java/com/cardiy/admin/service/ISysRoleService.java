@@ -1,6 +1,7 @@
 package com.cardiy.admin.service;
 
 import com.cardiy.admin.domain.SysRole;
+import com.cardiy.admin.domain.vo.CommonSelector;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,5 +26,13 @@ public interface ISysRoleService {
     void deleteById(String roleId);
     
     void deleteAllById(List<String> roleIds);
+
+    /**
+     *
+     * @param roleName
+     * @param roleKey
+     * @return
+     */
+    List<CommonSelector> findAllSelector(String roleName, String roleKey);
 }
 

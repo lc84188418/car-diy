@@ -5,6 +5,7 @@ import com.cardiy.admin.domain.SysDept;
 import com.cardiy.admin.mapper.SysDeptMapper;
 import com.cardiy.admin.service.ISysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class SysDeptServiceImpl implements ISysDeptService {
 
     @Override
     public List<SysDept> findAll() {
-        return deptMapper.findAll();
+        return deptMapper.findAll(Sort.by(Sort.Direction.DESC,"orderNum"));
     }
 
     @Override

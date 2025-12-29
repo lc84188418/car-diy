@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryFormRef" :inline="true" label-width="68px" class="search-form">
-      <el-form-item label="用户名称" prop="userName">
+      <el-form-item label="用户名" prop="userName">
         <el-input
           v-model="queryParams.userName"
-          placeholder="请输入用户名称"
+          placeholder="请输入用户名"
           clearable
           style="width: 200px"
           @keyup.enter="handleQuery"
@@ -34,7 +34,7 @@
     <div class="table-wrapper">
       <el-table v-loading="loading" :data="logList" class="data-table" border stripe v-table-resize>
       <el-table-column label="访问编号" prop="infoId" min-width="100" show-overflow-tooltip />
-      <el-table-column label="用户名称" prop="userName" min-width="120" show-overflow-tooltip />
+      <el-table-column label="用户名" prop="userName" min-width="120" show-overflow-tooltip />
       <el-table-column label="登录地址" prop="ipaddr" min-width="150" show-overflow-tooltip />
       <el-table-column label="登录地点" prop="loginLocation" min-width="150" show-overflow-tooltip />
       <el-table-column label="浏览器" prop="browser" min-width="120" show-overflow-tooltip />

@@ -8,6 +8,14 @@ export function listPost(query) {
     params: query
   });
 }
+// 查询岗位列表
+export function postSelector(query) {
+  return request({
+    url: "/api/admin/system/post/selector",
+    method: "get",
+    params: query
+  });
+}
 
 // 查询岗位详细
 export function getPost(postId) {
