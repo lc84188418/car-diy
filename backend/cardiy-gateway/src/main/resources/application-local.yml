@@ -4,6 +4,7 @@ spring:
     import:
       # 需要加载的配置文件
       - nacos:cardiy-gateway.yml
+      - nacos:common-mongodb.yml
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848

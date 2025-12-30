@@ -435,7 +435,7 @@ const loadRoleOptions = () => {
 
 /** 加载岗位选项 */
 const loadPostOptions = () => {
-  postSelector({ current: 1, size: 1000 }).then((response) => {
+  postSelector({}).then((response) => {
     const posts = response.data || [];
     postOptions.value = posts.map(post => ({
       postId: post.id,

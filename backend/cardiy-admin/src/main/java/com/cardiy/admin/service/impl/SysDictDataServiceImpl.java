@@ -65,7 +65,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
         }
         Query query = new Query(criteria);
         //排序
-        query.with(Sort.by(Sort.Direction.DESC, "dictSort"));
+        query.with(Sort.by(Sort.Direction.DESC, "dictType", "dictSort"));
         return mongoTemplate.find(query, SysDictData.class);
     }
 

@@ -32,8 +32,12 @@
           clearable
           style="width: 200px"
         >
-          <el-option label="正常" value="0" />
-          <el-option label="停用" value="1" />
+          <el-option
+            v-for="item in statusOptions"
+            :key="item.dictValue"
+            :label="item.dictLabel"
+            :value="item.dictValue"
+          />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -130,8 +134,13 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.status">
-            <el-radio label="0">正常</el-radio>
-            <el-radio label="1">停用</el-radio>
+            <el-radio
+              v-for="item in statusOptions"
+              :key="item.dictValue"
+              :label="item.dictValue"
+            >
+              {{ item.dictLabel }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注">
@@ -153,6 +162,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { listRole, getRole, delRole, addRole, updateRole } from "@/api/system/role";
+import { listData } from "@/api/system/dict";
 
 const loading = ref(true);
 const roleList = ref([]);
@@ -162,6 +172,7 @@ const open = ref(false);
 const single = ref(true);
 const multiple = ref(true);
 const ids = ref([]);
+const statusOptions = ref([]);
 
 const queryParams = reactive({
   current: 1,
@@ -280,8 +291,27 @@ const parseTime = (time) => {
   return new Date(time).toLocaleString("zh-CN");
 };
 
+/** 加载状态选项（从字典数据获取） */
+const loadStatusOptions = () => {
+  // 根据字典类型获取状态选项，字典类型是 sys_normal_disable
+  listData({ dictType: "sys_normal_disable", status: "0" }).then((response) => {
+    const data = response.data || [];
+    statusOptions.value = data.map(item => ({
+      dictLabel: item.dictLabel,
+      dictValue: item.dictValue
+    }));
+  }).catch(() => {
+    // 如果接口失败，使用默认值
+    statusOptions.value = [
+      { dictLabel: "正常", dictValue: "0" },
+      { dictLabel: "停用", dictValue: "1" }
+    ];
+  });
+};
+
 onMounted(() => {
   getList();
+  loadStatusOptions();
 });
 </script>
 
