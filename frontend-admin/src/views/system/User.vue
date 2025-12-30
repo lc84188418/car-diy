@@ -41,8 +41,12 @@
           clearable
           style="width: 200px"
         >
-          <el-option label="正常" value="0" />
-          <el-option label="停用" value="1" />
+          <el-option
+            v-for="item in statusOptions"
+            :key="item.dictValue"
+            :label="item.dictLabel"
+            :value="item.dictValue"
+          />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -293,6 +297,7 @@ import { listUser, getUser, delUser, addUser, updateUser } from "@/api/system/us
 import { listDept } from "@/api/system/dept";
 import { roleSelector } from "@/api/system/role";
 import { postSelector } from "@/api/system/post";
+import { listData } from "@/api/system/dict";
 
 const loading = ref(true);
 const userList = ref([]);
@@ -306,6 +311,7 @@ const ids = ref([]);
 const deptOptions = ref([]);
 const postOptions = ref([]);
 const roleOptions = ref([]);
+const statusOptions = ref([]);
 const userFormRef = ref(null);
 
 const queryParams = reactive({
@@ -435,6 +441,24 @@ const loadPostOptions = () => {
       postId: post.id,
       postName: post.name
     }));
+  });
+};
+
+/** 加载状态选项（从字典数据获取） */
+const loadStatusOptions = () => {
+  // 根据字典类型获取用户状态选项，字典类型是 sys_normal_disable
+  listData({ dictType: "sys_normal_disable", status: "0" }).then((response) => {
+    const data = response.data || [];
+    statusOptions.value = data.map(item => ({
+      dictLabel: item.dictLabel,
+      dictValue: item.dictValue
+    }));
+  }).catch(() => {
+    // 如果接口失败，使用默认值
+    statusOptions.value = [
+      { dictLabel: "正常", dictValue: "0" },
+      { dictLabel: "停用", dictValue: "1" }
+    ];
   });
 };
 
@@ -583,8 +607,9 @@ onMounted(() => {
   getList();
   // 加载下拉框选项数据
   loadDeptOptions();
-  loadRoleOptions();
-  loadPostOptions();
+  loadStatusOptions();
+  // loadRoleOptions();
+  // loadPostOptions();
 });
 </script>
 

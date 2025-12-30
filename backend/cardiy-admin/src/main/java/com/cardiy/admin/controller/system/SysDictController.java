@@ -16,10 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/system/dict")
 public class SysDictController {
-    
+
     @Autowired
     private ISysDictTypeService dictTypeService;
-    
+
     @Autowired
     private ISysDictDataService dictDataService;
 
@@ -44,8 +44,8 @@ public class SysDictController {
     @GetMapping("/type/{dictId}")
     public Result<SysDictType> getTypeInfo(@PathVariable("dictId") String dictId) {
         return dictTypeService.findById(dictId)
-            .map(Result::success)
-            .orElse(Result.error("字典类型不存在"));
+                .map(Result::success)
+                .orElse(Result.error("字典类型不存在"));
     }
 
     /**
@@ -79,18 +79,8 @@ public class SysDictController {
      * 根据字典类型获取字典数据列表
      */
     @GetMapping("/data/list")
-    public Result<List<SysDictData>> listData(@RequestParam(value = "dictType", required = false) String dictType,
-                                              @RequestParam(value = "status", required = false) String status) {
-        List<SysDictData> list;
-        if (dictType != null && !dictType.isEmpty()) {
-            if (status != null && !status.isEmpty()) {
-                list = dictDataService.findByDictTypeAndStatus(dictType, status);
-            } else {
-                list = dictDataService.findByDictType(dictType);
-            }
-        } else {
-            list = dictDataService.findAll();
-        }
+    public Result<List<SysDictData>> listData(SysDictData dictData) {
+        List<SysDictData> list = dictDataService.findByEntity(dictData);
         return Result.success(list);
     }
 
@@ -100,8 +90,8 @@ public class SysDictController {
     @GetMapping("/data/{dictCode}")
     public Result<SysDictData> getDataInfo(@PathVariable("dictCode") String dictCode) {
         return dictDataService.findById(dictCode)
-            .map(Result::success)
-            .orElse(Result.error("字典数据不存在"));
+                .map(Result::success)
+                .orElse(Result.error("字典数据不存在"));
     }
 
     /**

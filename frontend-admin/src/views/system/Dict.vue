@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName">
       <el-tab-pane label="字典类型" name="type">
         <div class="table-wrapper">
           <el-table v-loading="loading" :data="typeList" class="data-table" border stripe v-table-resize>
@@ -47,12 +47,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { listType, getType, delType, addType, updateType } from "@/api/system/dict";
 import { listData, getData, delData, addData, updateData } from "@/api/system/dict";
 
 const loading = ref(true);
+//默认查询字典类型数据
 const activeName = ref("type");
 const typeList = ref([]);
 const dataList = ref([]);
@@ -87,9 +88,14 @@ const getList = () => {
   }
 };
 
-const handleClick = (tab) => {
-  getList();
-};
+// 使用 watch 监听 activeName 的变化，当 tab 切换时自动加载对应的数据
+watch(activeName, (newVal) => {
+  if (newVal === "type") {
+    getTypeList();
+  } else if (newVal === "data") {
+    getDataList();
+  }
+});
 
 const handleUpdate = (row) => {
   // TODO: 实现修改对话框
