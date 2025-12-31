@@ -5,6 +5,7 @@ spring:
       # 需要加载的配置文件
       - nacos:cardiy-admin.yml
       - nacos:common-mongodb.yml
+      - nacos:common-redis.yml
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
