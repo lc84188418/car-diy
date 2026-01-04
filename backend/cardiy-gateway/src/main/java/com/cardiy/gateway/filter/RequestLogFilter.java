@@ -3,7 +3,9 @@ package com.cardiy.gateway.filter;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.cardiy.common.util.ServletUtil;
+import com.cardiy.common.util.UserAgentUtil;
 import com.cardiy.gateway.domain.SysOperLog;
 import com.cardiy.gateway.util.LogUtil;
 import jakarta.annotation.Resource;
@@ -66,10 +68,11 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
         operLog.setOperTime(new Date());
         // 默认正常
         operLog.setRespCode(200);
-        //操作系统
-        operLog.setOs(userAgent);
         // 设置业务模块（从URI推断）
         operLog.setTitle(logUtil.extractTitleFromUri(uri));
+        UserAgentUtil.DeviceInfo deviceInfo = UserAgentUtil.parseUserAgent(userAgent);
+        log.info("deviceInfo: {}", deviceInfo);
+        operLog.setUserAgent(JSONObject.toJSONString(deviceInfo));
 
         // 构建请求参数字符串
         StringBuilder paramBuilder = new StringBuilder();

@@ -112,7 +112,11 @@ public class ServletUtil {
      * @version: V1.32.0
      **/
     public static ServletRequestAttributes getRequestAttributes() {
-        return (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            throw new IllegalStateException("当前不在Web请求上下文中");
+        }
+        return attributes;
     }
 
 
