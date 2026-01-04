@@ -21,7 +21,7 @@ import java.util.Objects;
 /**
  * @author liuchun
  * @version 1.0
- * @description：.
+ * .
  * @copyright 咪咕新空文化科技（厦门）有限公司
  * @data 2024/9/19 13:55
  * @since jdk 1.8
@@ -66,7 +66,7 @@ public class SignatureFilter implements GlobalFilter, Ordered {
 
     /**
      * @author liuchun
-     * @description 必传请求头校验
+     * 必传请求头校验
      * @date 11:03 2025/12/5
      * @param [encrypt, reqId, timestamp, signature]
      * @version v2.2.0

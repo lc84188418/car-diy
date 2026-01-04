@@ -137,7 +137,7 @@ public final class JsonUtil {
 	}
 
 	/**
-	 * @description: 将json字符串转化为复杂对象.
+	 *  将json字符串转化为复杂对象.
 	 *  例如: GKSystemCommonResp<List<GKActivityResp>>
 	 *         JsonTool.jsonToObject(str, new TypeReference<AllmediaSynchMsg<SynchMcnPoms>>(){})
 	 * @param data
@@ -193,7 +193,7 @@ public final class JsonUtil {
 	}
 
 	/**
-	 　* @description: 指定对象生成Json，排除null与空字符串。即对应属性值为null或空字符串不会输出该属性.
+	 　*  指定对象生成Json，排除null与空字符串。即对应属性值为null或空字符串不会输出该属性.
 	 * @param data
 	　* @return java.lang.String
 	　* @author ge.fangyu
@@ -286,7 +286,7 @@ public final class JsonUtil {
 
 	/**
 	 * @Author li.hui
-	 * @Description 日志打印对象截取
+	 * 日志打印对象截取
 	 * @Date 2025/11/21 11:45
 	 * @Param
 	 * @Return
