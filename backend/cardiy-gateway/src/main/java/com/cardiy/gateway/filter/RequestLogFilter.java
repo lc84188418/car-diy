@@ -129,6 +129,7 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
         } else {
             // 没有 body 的请求直接继续
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
+                operLog.put("param", paramBuilder.toString());
                 // 打印响应信息
 //                System.out.println("Response Status Code: " + response.getStatusCode());
                 //HTTP状态码

@@ -1,6 +1,5 @@
 package com.cardiy.admin.service.impl;
 
-import cn.hutool.core.util.IdUtil;
 import com.cardiy.admin.domain.SysOperLog;
 import com.cardiy.admin.mapper.SysOperLogMapper;
 import com.cardiy.admin.service.ISysOperLogService;
@@ -9,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +23,6 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     
     @Override
     public SysOperLog save(SysOperLog operLog) {
-        operLog.setOperId(IdUtil.getSnowflakeNextIdStr());
         return operLogMapper.save(operLog);
     }
     
@@ -40,8 +38,8 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     }
     
     @Override
-    public Page<SysOperLog> findByOperTimeBetween(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable) {
-        return operLogMapper.findByOperTimeBetween(startTime, endTime, pageable);
+    public Page<SysOperLog> findByTimeBetween(Date startTime, Date endTime, Pageable pageable) {
+        return operLogMapper.findByTimeBetween(startTime, endTime, pageable);
     }
     
     @Override

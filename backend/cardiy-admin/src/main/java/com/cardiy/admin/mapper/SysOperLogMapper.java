@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 操作日志 数据层
@@ -22,6 +22,6 @@ public interface SysOperLogMapper extends MongoRepository<SysOperLog, String> {
     /**
      * 根据操作时间范围查询
      */
-    Page<SysOperLog> findByOperTimeBetween(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
+    Page<SysOperLog> findByTimeBetween(Date startTime, Date endTime, Pageable pageable);
 }
 

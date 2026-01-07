@@ -667,7 +667,7 @@ db.sys_oper_log.drop();
 
 // 创建索引
 db.sys_oper_log.createIndex({operId: 1}, {unique: true});
-db.sys_oper_log.createIndex({operTime: -1});
+db.sys_oper_log.createIndex({time: -1});
 
 // ==================== 13. 登录日志 (sys_logininfor) ====================
 db.sys_logininfor.drop();

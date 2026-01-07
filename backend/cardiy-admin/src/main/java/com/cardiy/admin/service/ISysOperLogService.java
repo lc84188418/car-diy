@@ -4,7 +4,7 @@ import com.cardiy.admin.domain.SysOperLog;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +19,7 @@ public interface ISysOperLogService {
     
     Page<SysOperLog> findAll(Pageable pageable);
     
-    Page<SysOperLog> findByOperTimeBetween(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
+    Page<SysOperLog> findByTimeBetween(Date startTime, Date endTime, Pageable pageable);
     
     void deleteById(String operId);
     

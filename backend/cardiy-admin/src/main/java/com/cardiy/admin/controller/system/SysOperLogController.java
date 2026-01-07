@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,16 +32,16 @@ public class SysOperLogController {
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "operName", required = false) String operName,
             @RequestParam(value = "status", required = false) Integer status,
-            @RequestParam(value = "beginTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime beginTime,
-            @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime,
+            @RequestParam(value = "beginTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date beginTime,
+            @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
             @RequestParam(value = "current", defaultValue = "1") int current,
             @RequestParam(value = "size", defaultValue = "10") int size) {
         
-        Pageable pageable = PageRequest.of(current - 1, size, Sort.by(Sort.Direction.DESC, "operTime"));
+        Pageable pageable = PageRequest.of(current - 1, size, Sort.by(Sort.Direction.DESC, "time"));
         Page<SysOperLog> page;
         
         if (beginTime != null && endTime != null) {
-            page = operLogService.findByOperTimeBetween(beginTime, endTime, pageable);
+            page = operLogService.findByTimeBetween(beginTime, endTime, pageable);
         } else {
             page = operLogService.findAll(pageable);
         }
