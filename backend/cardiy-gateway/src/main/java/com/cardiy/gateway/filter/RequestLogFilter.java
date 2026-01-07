@@ -4,9 +4,9 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.cardiy.common.kafka.KafkaProducer;
 import com.cardiy.common.util.ServletUtil;
 import com.cardiy.common.util.UserAgentUtil;
-import com.cardiy.gateway.domain.SysOperLog;
 import com.cardiy.gateway.util.LogUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +40,9 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
     @Resource()
     private LogUtil logUtil;
 
+    @Resource
+    private KafkaProducer kafkaProducer;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
@@ -57,22 +60,22 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
         }
 
         // 构建操作日志对象
-        SysOperLog operLog = new SysOperLog();
+        JSONObject operLog = new JSONObject();
         //优先从请求头中获取，若无则使用雪花算法的自增ID
         String reqId = headers.getFirst("reqId");
         String userAgent = headers.getFirst("user-agent");
-        operLog.setOperId(StringUtils.hasText(reqId) ? reqId : IdUtil.getSnowflakeNextIdStr());
-        operLog.setRequestMethod(methodName);
-        operLog.setOperUrl(uri);
-        operLog.setIp(clientIp);
-        operLog.setOperTime(new Date());
+        operLog.put("operId", StringUtils.hasText(reqId) ? reqId : IdUtil.getSnowflakeNextIdStr());
+        operLog.put("requestMethod", methodName);
+        operLog.put("uri", uri);
+        operLog.put("ip", clientIp);
+        operLog.put("time", new Date());
         // 默认正常
-        operLog.setRespCode(200);
+        operLog.put("respCode", 200);
         // 设置业务模块（从URI推断）
-        operLog.setTitle(logUtil.extractTitleFromUri(uri));
+        operLog.put("title", logUtil.extractTitleFromUri(uri));
         UserAgentUtil.DeviceInfo deviceInfo = UserAgentUtil.parseUserAgent(userAgent);
         log.info("deviceInfo: {}", deviceInfo);
-        operLog.setUserAgent(JSONObject.toJSONString(deviceInfo));
+        operLog.put("userAgent", JSONObject.toJSONString(deviceInfo));
 
         // 构建请求参数字符串
         StringBuilder paramBuilder = new StringBuilder();
@@ -83,14 +86,15 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
         // 只处理有 body 的请求（POST、PUT、PATCH 等）
         if (request.getHeaders().getContentLength() > 0) {
             MediaType mediaType = headers.getContentType();
-            operLog.setContentType(mediaType.getType() + "/" + mediaType.getSubtype());
+            operLog.put("contentType", mediaType.getType() + "/" + mediaType.getSubtype());
+
             return DataBufferUtils.join(request.getBody())
                     .flatMap(dataBuffer -> {
                         // 读取 body 内容
                         byte[] bytes = new byte[dataBuffer.readableByteCount()];
                         dataBuffer.read(bytes);
                         String bodyStr = new String(bytes, StandardCharsets.UTF_8);
-                        
+
                         // 记录 body 内容
                         log.info("{} {} request bodyParams: {}", methodName, uri, bodyStr);
 
@@ -101,7 +105,7 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
 
                         // 释放 buffer
                         DataBufferUtils.release(dataBuffer);
-                        
+
                         // 重新构建请求，因为 body 流已经被消费了
                         ServerHttpRequestDecorator decoratedRequest = new ServerHttpRequestDecorator(request) {
                             @Override
@@ -113,7 +117,7 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
                                 return Flux.empty();
                             }
                         };
-                        
+
                         // 使用装饰后的请求继续过滤链
                         return chain.filter(exchange.mutate().request(decoratedRequest).build());
                     })
@@ -128,14 +132,13 @@ public class RequestLogFilter implements GlobalFilter, Ordered {
                 // 打印响应信息
 //                System.out.println("Response Status Code: " + response.getStatusCode());
                 //HTTP状态码
-                operLog.setHttpStatusCode(exchange.getResponse().getStatusCode().value());
-                long executeTime = DateUtil.between(operLog.getOperTime(), new Date(), DateUnit.MS);
-                operLog.setExecuteTime(executeTime);
+                operLog.put("httpStatusCode", exchange.getResponse().getStatusCode().value());
+                long executeTime = DateUtil.between(operLog.getDate("time"), new Date(), DateUnit.MS);
+                operLog.put("executeTime", executeTime);
                 log.info("operLog info: {}", operLog);
                 // 注意：响应体通常在发送后无法直接访问，除非你有特定的逻辑去捕获它，例如使用Buffer-ClientResponseBody。
-
                 //TODO LIUCHUN 拿到code和msg，放到operLog中
-
+                kafkaProducer.sendMessage("system-oper-log", operLog.toJSONString());
             }));
         }
     }

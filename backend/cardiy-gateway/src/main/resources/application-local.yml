@@ -6,6 +6,7 @@ spring:
       - nacos:cardiy-gateway.yml
       - nacos:common-mongodb.yml
       - nacos:common-redis.yml
+      - nacos:common-kafka.yml
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848

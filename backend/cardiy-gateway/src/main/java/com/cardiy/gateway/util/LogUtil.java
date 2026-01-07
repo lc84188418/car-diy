@@ -1,13 +1,9 @@
 package com.cardiy.gateway.util;
 
-import com.cardiy.gateway.domain.SysOperLog;
-import com.cardiy.gateway.service.SysOperLogService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -22,8 +18,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class LogUtil {
     @Resource(name = "restUrlThreadPool")
     private ThreadPoolExecutor restUrlThreadPool;
-    @Resource
-    private SysOperLogService operLogService;
     /**
      * 从URI提取业务模块标题
      */
@@ -58,25 +52,25 @@ public class LogUtil {
     /**
      * 异步保存操作日志
      */
-    public void saveOperLog(SysOperLog operLog, String errorMsg, HttpStatusCode status) {
-        CompletableFuture.runAsync(() -> {
-            try {
-                // 设置响应结果
-                if (errorMsg != null) {
-                    // 限制响应体长度，避免过长
-                    if (errorMsg.length() > 2000) {
-                        operLog.setErrorMsg(errorMsg.substring(0, 2000) + "...(已截断)");
-                    } else {
-                        operLog.setErrorMsg(errorMsg);
-                    }
-                }
-                // 保存日志
-                operLogService.save(operLog);
-                log.debug("操作日志保存成功: {}", operLog.getOperUrl());
-            } catch (Exception e) {
-                log.error("保存操作日志失败: {}", e.getMessage(), e);
-            }
-        }, restUrlThreadPool);
-    }
+//    public void saveOperLog(SysOperLog operLog, String errorMsg, HttpStatusCode status) {
+//        CompletableFuture.runAsync(() -> {
+//            try {
+//                // 设置响应结果
+//                if (errorMsg != null) {
+//                    // 限制响应体长度，避免过长
+//                    if (errorMsg.length() > 2000) {
+//                        operLog.setErrorMsg(errorMsg.substring(0, 2000) + "...(已截断)");
+//                    } else {
+//                        operLog.setErrorMsg(errorMsg);
+//                    }
+//                }
+//                // 保存日志
+//                operLogService.save(operLog);
+//                log.debug("操作日志保存成功: {}", operLog.getOperUrl());
+//            } catch (Exception e) {
+//                log.error("保存操作日志失败: {}", e.getMessage(), e);
+//            }
+//        }, restUrlThreadPool);
+//    }
 
 }
