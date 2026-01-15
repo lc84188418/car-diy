@@ -45,7 +45,19 @@ public class KafkaProducer {
      * 发送消息（带Key）
      */
     public void sendMessage(String topic, String key, Object message) {
-        kafkaTemplate.send(topic, key, message);
+        try {
+            CompletableFuture<SendResult<String, Object>> send = kafkaTemplate.send(topic, key, message);
+            send.whenCompleteAsync((result, ex) -> {
+                if (null == ex) {
+                    log.info("KafkaProducer sendMsg byKey success.topic: {},key:{}, msg: {}", topic, key, message);
+                } else {
+                    log.error("发送消息失败:" + ex.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            log.error("KafkaProducer sendMsg byKey ===> 发生异常: {}", e.getMessage(), e);
+        }
+
     }
 
 }

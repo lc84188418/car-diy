@@ -1,9 +1,11 @@
 package com.cardiy.gateway.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cardiy.common.kafka.KafkaProducer;
 import com.cardiy.common.util.DateUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -25,14 +27,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Component
 public class RestUrlLogFilter implements GlobalFilter, Ordered {
 
-//    @Resource
-//    private KafkaProducer kafkaProducer;
+    @Resource
+    private KafkaProducer kafkaProducer;
 
     @Resource(name = "restUrlThreadPool")
     private ThreadPoolExecutor restUrlThreadPool;
 
-//    @Value("${platform.kafka.url.visit.topic}")
-//    private String TOPIC_URL_LOG;
+    @Value("${topic.urlVisit}")
+    private String urlVisit;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -54,7 +56,7 @@ public class RestUrlLogFilter implements GlobalFilter, Ordered {
             //是否内部调用，1是0否,此处为内部调用，如果是调用其他第三方接口，则为外部调用0
             jsonObject.put("isInner", 1);
             log.info("RestUrlLogFilter filter ===> 发送消息: {}", jsonObject);
-//            CompletableFuture.runAsync(() -> kafkaProducer.sendMsg(TOPIC_URL_LOG, jsonObject.toJSONString()), restUrlThreadPool);
+            kafkaProducer.sendMessage(urlVisit, jsonObject.toJSONString());
         } catch (Exception e) {
             log.error("RestUrlLogFilter filter ===> 发生异常: {}", e.getMessage(), e);
         }

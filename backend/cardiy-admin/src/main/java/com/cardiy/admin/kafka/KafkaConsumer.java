@@ -1,14 +1,19 @@
 package com.cardiy.admin.kafka;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cardiy.admin.domain.CommonUrlLogEntity;
 import com.cardiy.admin.domain.SysOperLog;
+import com.cardiy.admin.service.CommonUrlLogService;
 import com.cardiy.admin.service.ISysOperLogService;
+import com.cardiy.common.util.JsonUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
 
 /**
  * @author liuchun
@@ -23,10 +28,13 @@ public class KafkaConsumer {
 
     @Resource
     private ISysOperLogService sysOperLogService;
+    @Resource
+    private CommonUrlLogService commonUrlLogService;
+
     /**
      * 单条消息消费
      */
-    @KafkaListener(topics = "system-oper-log", groupId = "system-group")
+    @KafkaListener(topics = "${topic.systemOperLog}", groupId = "system-group")
     public void consumeOperLogMessage(ConsumerRecord<String, String> record, Acknowledgment acknowledgment) {
         try {
             String key = record.key();
@@ -47,22 +55,46 @@ public class KafkaConsumer {
         }
     }
 
+    @KafkaListener(topics = "${topic.urlVisit}", batch = "true")
+    public void consume(List<ConsumerRecord<String, String>> records, Acknowledgment acknowledgment) {
+        try {
+            Map<String, Long> map = new HashMap<>();
+            Set<CommonUrlLogEntity> set = new HashSet<>();
+            if (records != null && records.size() > 1) {
+                log.info("批量消费{}条消息", records.size());
+            }
+            //1处理每个url的数量
+            for (ConsumerRecord<String, String> record : records) {
+                String msg = record.value();
+                log.info("product_platform_request_url_log  ===> 消费到消息: {}", JsonUtil.getJsonSubString(msg));
+                CommonUrlLogEntity commonUrlLog = JSONObject.parseObject(msg, CommonUrlLogEntity.class);
+                String key = getMapKey(commonUrlLog);
+                map.merge(key, 1L, Long::sum);
+                set.add(commonUrlLog);
+            }
+            //2处理每个url的数量,将数量设置到对应的对象中,并批量更新
+            for (CommonUrlLogEntity commonUrlLog : set) {
+                commonUrlLog.setCount(map.get(getMapKey(commonUrlLog)));
+            }
+            commonUrlLogService.updateBatch(set);
+            // 所有消息处理完毕后提交偏移量（手动模式用）
+            acknowledgment.acknowledge();
+        } catch (Exception e) {
+            log.error("product_platform_request_url_log  ===> 发生异常: {}", e.getMessage(), e);
+        }
+    }
+
     /**
-     * 批量消息消费
-     */
-//    @KafkaListener(topics = "system-oper-log", groupId = "system-batch-group", containerFactory = "batchFactory")
-//    public void consumeBatchMessages(List<ConsumerRecord<String, Object>> records, Acknowledgment acknowledgment) {
-//        log.info("收到批量消息，数量: {}", records.size());
-//        for (ConsumerRecord<String, Object> record : records) {
-//            try {
-//                processUserMessage(record.value());
-//            } catch (Exception e) {
-//                log.error("处理单条消息失败: {}", record, e);
-//            }
-//        }
-//        // 批量提交
-//        acknowledgment.acknowledge();
-//    }
+     * @desc:获取map的key
+     * @author: liuchun
+     * @createTime: 2024/9/23 1:55
+     * @param: commonUrlLog url日志对象
+     * @version: V1.29.0
+     * @return: java.lang.String 存放在map中的key
+     **/
+    private String getMapKey(CommonUrlLogEntity commonUrlLog) {
+        return commonUrlLog.getUrl() + commonUrlLog.getDay();
+    }
 
     /**
      * 使用注解方式获取消息头
