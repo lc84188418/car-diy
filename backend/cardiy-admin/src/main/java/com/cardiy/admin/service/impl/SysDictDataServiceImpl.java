@@ -4,14 +4,18 @@ import cn.hutool.core.util.IdUtil;
 import com.cardiy.admin.domain.SysDictData;
 import com.cardiy.admin.mapper.SysDictDataMapper;
 import com.cardiy.admin.service.ISysDictDataService;
+import com.cardiy.common.constant.RedisConstant;
+import com.cardiy.common.util.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,12 +30,15 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
     private SysDictDataMapper dictDataMapper;
     @Autowired
     private MongoTemplate mongoTemplate;
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public SysDictData save(SysDictData dictData) {
         if (Objects.isNull(dictData.getDictCode())) {
             dictData.setDictCode(IdUtil.getSnowflakeNextIdStr());
         }
+        redisService.delete(MessageFormat.format(RedisConstant.SYS_DICT_DATA_KEY, dictData.getDictType()));
         return dictDataMapper.save(dictData);
     }
 
@@ -58,6 +65,14 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
 
     @Override
     public List<SysDictData> findByEntity(SysDictData dictData) {
+        String redisKey = MessageFormat.format(RedisConstant.SYS_DICT_DATA_KEY, dictData.getDictType());
+        if (redisService.hasKey(redisKey)) {
+            List<SysDictData> redisValue = redisService.getList(redisKey);
+            if (!CollectionUtils.isEmpty(redisValue)) {
+                return redisValue;
+            }
+        }
+
         Criteria criteria = new Criteria();
         criteria.and("status").is("0");
         if (StringUtils.hasText(dictData.getDictType())) {
@@ -66,7 +81,9 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
         Query query = new Query(criteria);
         //排序
         query.with(Sort.by(Sort.Direction.DESC, "dictType", "dictSort"));
-        return mongoTemplate.find(query, SysDictData.class);
+        List<SysDictData> list = mongoTemplate.find(query, SysDictData.class);
+        redisService.setList(redisKey, list);
+        return list;
     }
 
     @Override
@@ -82,6 +99,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
         for (String dictCode : dictCodes) {
             deleteById(dictCode);
         }
+        redisService.deletePrefix(RedisConstant.SYS_DICT_DATA_PREFIX);
     }
 }
 
